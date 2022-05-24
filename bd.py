@@ -18,4 +18,8 @@ class Repositorio:
     def recuperar_clientes(cls):
         return cls.clienteTabla.values()
 
+    @classmethod
+    def recuperar_cliente(cls, id:int):
+        return cls.clienteTabla[id]
+
 

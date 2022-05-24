@@ -22,3 +22,9 @@ def registar_cliente(cliente: Cliente):
 def recuperar_clientes():
     registros: dict[int, Cliente]= Repositorio.recuperar_clientes()
     return list(registros)
+
+
+@app.get("/clientes/{id}")
+def recuperar_cliente(id:int):
+    cliente: Cliente= Repositorio.recuperar_cliente(id)
+    return cliente
