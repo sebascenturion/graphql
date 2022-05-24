@@ -5,6 +5,9 @@ from pydantic import BaseModel
 from models.cliente import Cliente
 from models.cuenta import Cuenta
 from bd import Repositorio
+import json
+from fastapi.encoders import jsonable_encoder
+
 app = FastAPI()
 
 
@@ -21,7 +24,10 @@ def registar_cliente(cliente: Cliente):
 @app.get("/clientes")
 def recuperar_clientes():
     registros: dict[int, Cliente]= Repositorio.recuperar_clientes()
-    return list(registros)
+    listObjetos =  list(registros) #lista DE objetos CLIENTES 
+    listaJson = jsonable_encoder(listObjetos) #convertimos lista de objetos a json
+
+    return listaJson
 
 
 @app.get("/clientes/{id}")
