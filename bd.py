@@ -1,16 +1,21 @@
 from typing import Union
+from models.cliente import Cliente
 from models.cuenta import Cuenta
 
 
 class Repositorio:
 
-    cuentaTabla : dict[int, Cuenta] = {}
+    clienteTabla : dict[int, Cliente] = {}
+    id = 0
 
     @classmethod
-    def registrarCuenta(cls, cuenta:Cuenta):
-        cls.cuentaTabla[cuenta.cuenta] = cuenta
+    def insertarCliente(cls, cliente:Cliente):
+        cls.id =  cls.id +1 
+        cliente.id = cls.id 
+        cls.clienteTabla[cls.id] = cliente
 
     @classmethod
-    def getCuenta(cls, id:int):
-        return cls.cuentaTabla[id]
+    def recuperar_clientes(cls):
+        return cls.clienteTabla.values()
+
 

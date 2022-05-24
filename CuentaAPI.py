@@ -2,24 +2,23 @@ from typing import Union
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from models.cliente import Cliente
 from models.cuenta import Cuenta
 from bd import Repositorio
 app = FastAPI()
 
 
-@app.post("/cuentas/{cuenta_id}")
-def update_item(cuenta_id: int, cuenta: Cuenta):
-    Repositorio.registrarCuenta(cuenta)
-    
-    
-    #return {"cuenta": cuenta.cuenta, "mensaje": "ok"}
-    return cuenta
+#Recursos
+# 1 - Cliente
+# 2 - Pago 
 
 
-@app.get("/cuentas/{cuenta_id}")
-def update_item(cuenta_id: int, q: Union[str, None] = None):
-    return Repositorio.getCuenta(cuenta_id)
-    
-    
-    #return {"cuenta": cuenta.cuenta, "mensaje": "ok"}
-    #return cuenta
+@app.post("/clientes")
+def registar_cliente(cliente: Cliente):
+    Repositorio.insertarCliente(cliente)
+    return cliente
+
+@app.get("/clientes")
+def recuperar_clientes():
+    registros: dict[int, Cliente]= Repositorio.recuperar_clientes()
+    return list(registros)
