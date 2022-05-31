@@ -13,10 +13,27 @@ app = FastAPI()
 
 #Recursos
 # 1 - Cliente
+# Registrar - POST /clientes
+# listar - GET /clientes
+# consultar- GET /clientes/{pk} 
+# actualizar- PUT /clientes/{pk}
+# eliminar - DELETE /clientes/{pk}
+
 # 2 - Pago 
+# - POST /pagos
+# - GET /pagos
+# - GET /pagos/{pk} 
+# - PUT /pagos/{pk}
+# - DELETE /pagos/{pk}
 
+@app.get("/clientes/morosos", operation_id="clientes_morosos",
+    summary="Listado de cliente morosos",
+    description="Listado de clientes morosos del ultimo mes correspondiente a la cartera rodados"
+)
+def cliente_morosos():
+    return ["Carlos", "Felipe", "Manuel"]
 
-@app.post("/clientes")
+@app.post("/clientes", operation_id="registar_cliente")
 def registar_cliente(cliente: Cliente):
     Repositorio.insertarCliente(cliente)
     return cliente
