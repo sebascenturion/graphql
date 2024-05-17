@@ -25,5 +25,3 @@ class Movie(BaseModel):
     url: str
 
 
-class Model(BaseModel):
-    __root__: List[Movie]

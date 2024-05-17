@@ -16,10 +16,11 @@ class Item(BaseModel):
 def read_root():
     return {"Hello": "World"}
 
-#htttp://localhost:8000/items/1?nombre=""
+#http://localhost:8000/items/1?nombre=eduardo""
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+def read_item(item_id: int, tipo: Union[str, None] = None):
+    #logica de negocio y valiciio
+    return {"item_id": item_id, "q": tipo}
 
 #htttp://localhost:8000/items?tipo="comestible"
 @app.get("/items/")

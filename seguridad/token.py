@@ -1,7 +1,10 @@
 import requests
 import json
+
 url = "https://api.thecatapi.com/v1/favourites"
 
+
+#se utiliza un token autorizado por el API
 headers = {
 	"X-Api-Key": "DEMO-API-KEY"
 }

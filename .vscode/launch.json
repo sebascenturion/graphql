@@ -14,6 +14,32 @@
             ],
             "jinja": true,
             "justMyCode": true
+        },
+        {
+            "name": "FastAPI Basic auth",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "cwd": "${workspaceFolder}/seguridad",
+            "args": [
+              "basic:app",
+              "--reload",
+              "--port", //these arg are optional
+              "3003"
+            ]
+        },
+        {
+            "name": "FastAPI JWT auth",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "cwd": "${workspaceFolder}/seguridad",
+            "args": [
+              "jwt_test:app",
+              "--reload",
+              "--port", //these arg are optional
+              "8000"
+            ]
         }
     ]
 }
