@@ -23,6 +23,18 @@ def init_db(nombre_db: str):
             FOREIGN KEY(cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS pagos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cliente_id INTEGER,
+            cuenta_id INTEGER,
+            numero_factura TEXT,
+            monto INTEGER,
+            moneda TEXT,
+            FOREIGN KEY(cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+            FOREIGN KEY(cuenta_id) REFERENCES cuentas(id) ON DELETE CASCADE
+        )
+    ''')
     conn.commit()
     conn.close()
 

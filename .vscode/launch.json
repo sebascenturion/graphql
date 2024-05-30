@@ -40,6 +40,18 @@
               "--port", //these arg are optional
               "8000"
             ]
-        }
+        },
+        {
+            "name": "GraphSQL Example",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "cwd": "${workspaceFolder}/banco/graphsql",
+            "args": [
+                "graphql_main:app"
+            ],
+            "jinja": true,
+            "justMyCode": true
+        },
     ]
 }

@@ -1,0 +1,64 @@
+pip install fastapi 'strawberry-graphql[fastapi]' sqlalchemy databases uvicorn
+
+## ejecucion
+uvicorn graphql_main:app --reload
+
+## navegacion
+http://localhost:8000/graphql
+
+### Consultas
+```json
+query {
+  allClientes {
+    edges {
+      node {
+        id
+        cedula
+        nombre
+        apellido
+      }
+    }
+  }
+}
+```
+
+### Mutaciones (Mutations)
+Para crear un nuevo cliente, puedes usar la siguiente mutación:
+
+```json
+mutation {
+  createCliente(cedula: "123456789", nombre: "Juan", apellido: "Perez") {
+    cliente {
+      id
+      cedula
+      nombre
+      apellido
+    }
+  }
+}
+```
+
+Para crear un nueva cuenta , puedes usar la siguiente mutación:
+```json
+mutation {
+  createCuenta(clienteId: 1, cuenta: 987654321) {
+    cuenta {
+      id
+      cuenta
+    }
+  }
+}
+```
+
+```json
+mutation {
+  createPago(clienteId: 1, cuentaId: 1, monto: 100, moneda: "USD", numeroFactura: "INV123456") {
+    pago {
+      id
+      monto
+      moneda
+      numeroFactura
+    }
+  }
+}
+```
