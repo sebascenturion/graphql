@@ -23,7 +23,7 @@ def get_clients_named(name):
         raise Exception(f"Query failed to run by returning code of {response.status_code}. {response.text}")
 
 if __name__ == "__main__":
-    name_to_search = "Eduardo"
-    clientes = get_clients_named(name_to_search)
+    nombre = "Luis"
+    clientes = get_clients_named(nombre)
     for cliente in clientes:
         print(f"ID: {cliente['id']}, Cedula: {cliente['cedula']}, Nombre: {cliente['nombre']}, Apellido: {cliente['apellido']}")

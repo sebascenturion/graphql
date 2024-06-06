@@ -26,7 +26,7 @@ def get_clients_named(name):
     return result['allClientes']
 
 if __name__ == "__main__":
-    name_to_search = "Eduardo"
-    clientes = get_clients_named(name_to_search)
+    nombre = "Eduardo"
+    clientes = get_clients_named(nombre)
     for cliente in clientes:
         print(f"ID: {cliente['id']}, Cedula: {cliente['cedula']}, Nombre: {cliente['nombre']}, Apellido: {cliente['apellido']}")

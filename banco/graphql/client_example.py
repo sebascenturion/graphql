@@ -2,7 +2,7 @@ import requests
 
 def get_clients():
     url = "http://localhost:8000/graphql"
-    query = """
+    comando = """
     query {
       allClientes {
         id
@@ -13,7 +13,7 @@ def get_clients():
     }
     """
     
-    response = requests.post(url, json={'query': query})
+    response = requests.post(url, json={'query': comando})
     if response.status_code == 200:
         result = response.json()
         clientes = result['data']['allClientes']

@@ -1,20 +1,24 @@
 import strawberry
-from typing import List
+import typing
+from typing import List, Optional
 from strawberry.types import Info
 from models import Cliente as ClienteModel, Cuenta as CuentaModel, Pagos as PagosModel, SessionLocal
-
-@strawberry.type
-class Cliente:
-    id: int
-    cedula: str
-    nombre: str
-    apellido: str
 
 @strawberry.type
 class Cuenta:
     id: int
     cliente_id: int
     cuenta: int
+    
+@strawberry.type
+class Cliente:
+    id: int
+    cedula: str
+    nombre: str
+    apellido: str
+    cuentas: typing.List[Cuenta]
+
+
 
 @strawberry.type
 class Pago:
@@ -27,10 +31,20 @@ class Pago:
 
 @strawberry.type
 class Query:
+
+    # @strawberry.field
+    # def all_clientes(self, info: Info) -> List[Cliente]:
+    #     session = SessionLocal()
+    #     clientes = session.query(ClienteModel).all()
+    #     return clientes
+
     @strawberry.field
-    def all_clientes(self, info: Info) -> List[Cliente]:
+    def all_clientes(self, info: Info, nombre: Optional[str] = None) -> List[Cliente]:
         session = SessionLocal()
-        clientes = session.query(ClienteModel).all()
+        query = session.query(ClienteModel)
+        if nombre:
+            query = query.filter(ClienteModel.nombre == nombre)
+        clientes = query.all()
         return clientes
 
     @strawberry.field
