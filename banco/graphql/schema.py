@@ -67,6 +67,7 @@ class Mutation:
         cliente = ClienteModel(cedula=cedula, nombre=nombre, apellido=apellido)
         session.add(cliente)
         session.commit()
+        session.refresh(cliente)
         return cliente
 
     @strawberry.mutation
@@ -75,6 +76,7 @@ class Mutation:
         cuenta = CuentaModel(cliente_id=cliente_id, cuenta=cuenta)
         session.add(cuenta)
         session.commit()
+        session.refresh(cuenta)
         return cuenta
 
     @strawberry.mutation
@@ -83,6 +85,7 @@ class Mutation:
         pago = PagosModel(cliente_id=cliente_id, cuenta_id=cuenta_id, monto=monto, moneda=moneda, numero_factura=numero_factura)
         session.add(pago)
         session.commit()
+        session.refresh(pago)
         return pago
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
