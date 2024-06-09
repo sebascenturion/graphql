@@ -14,26 +14,24 @@ class Cliente(Base):
     nombre = Column(String, index=True)
     apellido = Column(String, index=True)
     cuentas = relationship("Cuenta", back_populates="cliente")
-    pagos = relationship("Pagos", back_populates="cliente")
 
 class Cuenta(Base):
     __tablename__ = "cuentas"
     id = Column(Integer, primary_key=True, index=True)
     cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cuenta = Column(Integer, index=True)
-    cliente = relationship("Cliente", back_populates="cuentas")
     pagos = relationship("Pagos", back_populates="cuenta")
+    cliente = relationship("Cliente", back_populates="cuentas")
 
 class Pagos(Base):
     __tablename__ = "pagos"
     id = Column(Integer, primary_key=True, index=True)
-    cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
     monto = Column(Integer)
     moneda = Column(String)
     numero_factura = Column(String)
-    cliente = relationship("Cliente", back_populates="pagos")
     cuenta = relationship("Cuenta", back_populates="pagos")
+
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

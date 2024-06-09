@@ -42,11 +42,11 @@
             ]
         },
         {
-            "name": "GraphSQL Example",
+            "name": "GraphQL Example",
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
-            "cwd": "${workspaceFolder}/banco/graphsql",
+            "cwd": "${workspaceFolder}/banco/graphql",
             "args": [
                 "graphql_main:app"
             ],

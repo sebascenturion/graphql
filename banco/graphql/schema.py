@@ -1,33 +1,34 @@
 import strawberry
 import typing
-from typing import List, Optional
+from typing import List, Optional, Union
 from strawberry.types import Info
 from models import Cliente as ClienteModel, Cuenta as CuentaModel, Pagos as PagosModel, SessionLocal
+from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
+
 
 @strawberry.type
 class Cuenta:
     id: int
     cliente_id: int
     cuenta: int
-    
+    pagos: List["Pago"]
+
+@strawberry.type
+class Pago:
+    id: int
+    cuenta_id: int
+    monto: int
+    moneda: str
+    numero_factura: str
+
 @strawberry.type
 class Cliente:
     id: int
     cedula: str
     nombre: str
     apellido: str
-    cuentas: typing.List[Cuenta]
-
-
-
-@strawberry.type
-class Pago:
-    id: int
-    cliente_id: int
-    cuenta_id: int
-    monto: int
-    moneda: str
-    numero_factura: str
+    cuentas: List[Cuenta]
 
 @strawberry.type
 class Query:
@@ -41,11 +42,18 @@ class Query:
     @strawberry.field
     def all_clientes(self, info: Info, nombre: Optional[str] = None) -> List[Cliente]:
         session = SessionLocal()
-        query = session.query(ClienteModel)
+        clientes = session.query(ClienteModel).options(
+                joinedload(ClienteModel.cuentas).joinedload(CuentaModel.pagos)
+            ).all()
         if nombre:
             query = query.filter(ClienteModel.nombre == nombre)
         clientes = query.all()
         return clientes
+    
+    @strawberry.field
+    def pagos_por_cuenta(self, info: Info, cuenta: int) -> List[Pago]:
+       '''A IMPLEMENTAR'''
+       return None
 
     @strawberry.field
     def all_cuentas(self, info: Info) -> List[Cuenta]:
@@ -80,12 +88,14 @@ class Mutation:
         return cuenta
 
     @strawberry.mutation
-    def create_pago(self, info: Info, cliente_id: int, cuenta_id: int, monto: int, moneda: str, numero_factura: str) -> Pago:
+    def create_pago(self, info: Info,cuenta_id: int, monto: int, moneda: str, numero_factura: str) -> Pago:
         session = SessionLocal()
-        pago = PagosModel(cliente_id=cliente_id, cuenta_id=cuenta_id, monto=monto, moneda=moneda, numero_factura=numero_factura)
+        pago = PagosModel(cuenta_id=cuenta_id, monto=monto, moneda=moneda, numero_factura=numero_factura)
         session.add(pago)
         session.commit()
         session.refresh(pago)
         return pago
+    
+    
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)

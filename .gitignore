@@ -1,3 +1,4 @@
 __pycache__/
 BancoProfeAPI.py
 banco/models/models.py
+schema_resolucion.py
