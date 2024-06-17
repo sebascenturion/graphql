@@ -6,7 +6,6 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
-
 @strawberry.type
 class Cuenta:
     id: int
@@ -69,6 +68,13 @@ class Query:
 class Mutation:
     @strawberry.mutation
     def create_cliente(self, info: Info, cedula: str, nombre: str, apellido: str) -> Cliente:
+        if not cedula or not cedula.strip():
+            raise ValueError("La cédula es requerida y no puede estar vacía.")
+        if not nombre or not nombre.strip():
+            raise ValueError("El nombre es requerido y no puede estar vacío.")
+        if not apellido or not apellido.strip():
+            raise ValueError("El apellido es requerido y no puede estar vacío.")
+
         session = SessionLocal()
         cliente = ClienteModel(cedula=cedula, nombre=nombre, apellido=apellido)
         session.add(cliente)
@@ -78,19 +84,28 @@ class Mutation:
 
     @strawberry.mutation
     def create_cuenta(self, info: Info, cliente_id: int, cuenta: int) -> Cuenta:
+        if not cuenta:
+            raise ValueError("El número de cuenta es requerido.")
         session = SessionLocal()
-        cuenta = CuentaModel(cliente_id=cliente_id, cuenta=cuenta)
+        cuenta_model = CuentaModel(cliente_id=cliente_id, cuenta=cuenta)
         try:
-            session.add(cuenta)
+            session.add(cuenta_model)
             session.commit()
-            session.refresh(cuenta)
+            session.refresh(cuenta_model)
         except IntegrityError:
             session.rollback()
-            raise ValueError("El número de cuenta debe ser único y requerido.")
-        return cuenta
+            raise ValueError("El número de cuenta debe ser único.")
+        return cuenta_model
 
     @strawberry.mutation
     def create_pago(self, info: Info, cuenta_id: int, monto: int, moneda: str, numero_factura: str) -> Pago:
+        if not numero_factura or not numero_factura.strip():
+            raise ValueError("El número de factura es requerido y no puede estar vacío.")
+        if not moneda or not moneda.strip():
+            raise ValueError("La moneda es requerida y no puede estar vacía.")
+        if monto <= 0:
+            raise ValueError("El monto debe ser mayor que cero.")
+
         session = SessionLocal()
         try:
             # Validar existencia de cuenta y cliente
